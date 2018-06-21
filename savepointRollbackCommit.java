@@ -10,7 +10,7 @@ package com.bridgelabz.jdbc;
  */
 import java.sql.*;
 
-public class savepointRollback {
+public class savepointRollbackCommit {
    public static void main(String[] args) throws Exception {
       Class.forName("com.mysql.jdbc.Driver");
       Connection con = DriverManager.getConnection(
