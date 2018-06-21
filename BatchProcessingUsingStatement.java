@@ -17,8 +17,8 @@ Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/medini?u
 con.setAutoCommit(false);  
   
 Statement stmt=con.createStatement();  
-stmt.addBatch("insert into Employees values(193,23,'asr','asr')");  
-stmt.addBatch("insert into Employees values(194,28,'amar','asr')");  
+stmt.addBatch("insert into Employees values(1593,23,'asr','asr')");  
+stmt.addBatch("insert into Employees values(1594,28,'amar','asr')");  
 stmt.executeBatch();//executing the batch  
   System.out.println("record inserted");
 con.commit();  

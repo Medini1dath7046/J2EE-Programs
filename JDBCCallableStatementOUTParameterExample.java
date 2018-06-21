@@ -1,115 +1,62 @@
-/**
- * 
- */
-package com.bridgelabz.jdbc;
-import java.sql.*;
 
+package com.bridgelabz.jdbc;
 /**
  * Created By:Medini P.D
  * Date:- 12/06/2018
  * Purpose:
  */
-
-import java.sql.CallableStatement;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 
-public class JDBCCallableStatementOUTParameterExample {
+public class JDBCCallableStatementOUTParameterExample
+{   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/medini?useSSL=false";
+    static final String USER = "root";
+    static final String PASS = "root";
 
-	private static final String DB_DRIVER ="com.mysql.jdbc.Driver";
-	private static final String DB_CONNECTION ="jdbc:mysql://localhost:3306/medini?useSSL=false";
-	private static final String DB_USER = "root";
-	private static final String DB_PASSWORD = "root";
-
-	public static void main(String[] argv) {
-
-		try {
-
-			callOracleStoredProcOUTParameter();
-
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-
+    public JDBCCallableStatementOUTParameterExample()
+    {
+        try
+        {
+            // Loading the driver
+            Class.forName("com.mysql.jdbc.Driver");
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+        }
+    }
+    public Connection createConnection()
+    {
+        Connection con = null;
+        try
+		{
+		   con = DriverManager.getConnection(DB_URL,USER,PASS);
 		}
-
-	}
-
-	private static void callOracleStoredProcOUTParameter() throws SQLException {
-
-		Connection dbConnection = null;
-		CallableStatement callableStatement = null;
-
-		String getDBUSERByUserIdSql = "{call getEmployees(?,?,?,?)}";
-
-		try {
-			dbConnection = getDBConnection();
-			callableStatement = dbConnection.prepareCall(getDBUSERByUserIdSql);
-
-			callableStatement.setInt(1, 10);
-			callableStatement.registerOutParameter(2, java.sql.Types.VARCHAR);
-			callableStatement.registerOutParameter(3, java.sql.Types.VARCHAR);
-			callableStatement.registerOutParameter(4, java.sql.Types.DATE);
-
-			// execute getDBUSERByUserId store procedure
-			callableStatement.executeUpdate();
-
-			String userName = callableStatement.getString(2);
-			String createdBy = callableStatement.getString(3);
-			Date createdDate = callableStatement.getDate(4);
-
-			System.out.println("UserName : " + userName);
-			System.out.println("CreatedBy : " + createdBy);
-			System.out.println("CreatedDate : " + createdDate);
-
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-
-		} finally {
-
-			if (callableStatement != null) {
-				callableStatement.close();
-			}
-
-			if (dbConnection != null) {
-				dbConnection.close();
-			}
-
+		catch (Exception e)
+		{
+		    System.out.println(e.toString());
 		}
+        return con;
+    }
 
-	}
-
-	private static Connection getDBConnection() {
-
-		Connection dbConnection = null;
-
-		try {
-
-			Class.forName(DB_DRIVER);
-
-		} catch (ClassNotFoundException e) {
-
-			System.out.println(e.getMessage());
-
-		}
-
-		try {
-
-			dbConnection = DriverManager.getConnection(
-				DB_CONNECTION, DB_USER,DB_PASSWORD);
-			return dbConnection;
-
-		} catch (SQLException e) {
-
-			System.out.println(e.getMessage());
-
-		}
-
-		return dbConnection;
-
-	}
-
+    public static void main(String[] args)
+    {
+        JDBCCallableStatementOUTParameterExample calllableStatement = new JDBCCallableStatementOUTParameterExample();
+        Connection connection = calllableStatement.createConnection();
+        try
+        {
+            java.sql.CallableStatement cs = connection.prepareCall("call getEmployees()");
+            ResultSet rs = cs.executeQuery();
+            while(rs.next())
+            {
+                System.out.println(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3)+"\t"+rs.getString(4));
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.toString());
+        }
+    }
 }

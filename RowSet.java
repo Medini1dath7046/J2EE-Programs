@@ -3,18 +3,7 @@
  */
 package com.bridgelabz.jdbc;
 
-/**
- * Created By:Medini P.D
- * Date:- 12/06/2018
- * Purpose:
- */
-import java.sql.Connection;  
-import java.sql.DriverManager;  
-import java.sql.ResultSet;  
-import java.sql.Statement;  
-import javax.sql.RowSetEvent;  
-import javax.sql.RowSetListener;  
-import javax.sql.rowset.JdbcRowSet;  
+import javax.sql.rowset.JdbcRowSet;
 import javax.sql.rowset.RowSetProvider;  
   
 public class RowSet {  
